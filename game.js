@@ -31,7 +31,7 @@ game.newLoopFromConstructor('myGame', function () {
 		positionC : point(game.getWH2().w, game.getWH2().h), // central position of text
 		size : 50, // size text
 		color : '#EAEAEA', // color text
-		text : 'Hello, World 2.0!', // label
+		text : 'Hello, Dude!', // label
 		alpha : 0, // alpha channel
 		font : 'Arial' // font family
 	});
