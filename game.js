@@ -1,5 +1,5 @@
 var pjs = new PointJS(640, 480, {
-	backgroundColor : '#00ffff' // optional
+	backgroundColor : '#00ccff' // optional
 });
 // pjs.system.initFullPage(); // for Full Page mode
 // pjs.system.initFullScreen(); // for Full Screen mode (only Desctop)
