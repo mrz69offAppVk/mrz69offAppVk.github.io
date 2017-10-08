@@ -31,7 +31,7 @@ game.newLoopFromConstructor('myGame', function () {
 		positionC : point(game.getWH2().w, game.getWH2().h), // central position of text
 		size : 10, // size text
 		color : '#EAEAEA', // color text
-		text : "Привет! Я игра, написана в блакноте,\r\n спицально для ВК", // label
+		text : "Hello, DUDE!", // label
 		alpha : 0, // alpha channel
 		font : 'Arial' // font family
 	});
