@@ -1,5 +1,5 @@
 var pjs = new PointJS(640, 480, {
-	backgroundColor : '#00ccff' // optional
+	backgroundColor : '#507299' // optional
 });
 // pjs.system.initFullPage(); // for Full Page mode
 // pjs.system.initFullScreen(); // for Full Screen mode (only Desctop)
@@ -30,7 +30,7 @@ game.newLoopFromConstructor('myGame', function () {
 	var myText = game.newTextObject({
 		positionC : point(game.getWH2().w, game.getWH2().h), // central position of text
 		size : 10, // size text
-		color : '#507299', // color text
+		color : '#0000сс', // color text
 		text : "Hello, DUDE!", // label
 		alpha : 0, // alpha channel
 		font : 'Arial' // font family
