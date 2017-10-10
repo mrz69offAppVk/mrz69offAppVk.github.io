@@ -29,8 +29,8 @@ game.newLoopFromConstructor('myGame', function () {
 
 	var myText = game.newTextObject({
 		positionC : point(game.getWH2().w, game.getWH2().h), // central position of text
-		size : 10, // size text
-		color : '#0000сс', // color text
+		size : 40, // size text
+		color : '#ffffсс', // color text
 		text : "Hello, DUDE!", // label
 		alpha : 0, // alpha channel
 		font : 'Arial' // font family
