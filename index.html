@@ -6,13 +6,13 @@
  <title>Flappy Bird!</title>
 </head>
 <body>
-<canvas id='mrz_canvas' width='150px' height='150px'> :( Обновите браузер :( </canvas>
+<canvas id="mrz_canvas" width="150px" height="150px"> :( Обновите браузер :( </canvas>
 <script type="text/javascript">
 	function getParent(el){
 		return el.parentElement || el.parentNode; 
 	}
-	var canvas = document.getElementById("mrz_canvas"),
-	       ctx = example.getContext('2d');
+	var canvas = document.getElementById("mrz_canvas");
+	var ctx = canvas.getContext('2d');
 	var parent = getParent(canvas);
 	var x_size = 0;
 	var y_size = 0;
