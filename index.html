@@ -9,10 +9,28 @@
 <style type="text/css">
 	#canvas{background-color:#0ff;}
 </style>
- <canvas id="canvas" width="388" height="512"></canvas>
+ <!-- <canvas id="canvas" width="388" height="512"></canvas> -->
+<canvas id='example'> :( Обновите браузер :( </canvas>
 
 <script type="text/javascript">
+	function getParent(el){
+		return el.parentElement || el.parentNode; 
+	}
+	var canvas = document.getElementById("example"),
+		ctx    = example.getContext('2d');
+	var parent = getParent(canvas);
+	var x_size = 0;
+	var y_size = 0;
+	x_size = parent.offsetWidth;
+	y_size = parent.offsetHeight;
+	alert('X = ' + x_size);
+	alert('Y = ' + y_size);
+	canvas.width = x_size;
+	canvas.height = y_size;
+	ctx.fillRect(0, 0, canvas.width, canvas.height);
+</script>
 <!--
+<script type="text/javascript">
 var cvs = document.getElementById("canvas");
 var ctx = cvs.getContext("2d");
 
@@ -103,8 +121,7 @@ function draw() {
 
 pipeBottom.onload = draw;
 	
-//-->
-</script>
+</script> -->
 
 </body>
 </HTML>
