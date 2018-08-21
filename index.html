@@ -6,122 +6,22 @@
  <title>Flappy Bird!</title>
 </head>
 <body>
-			<canvas id="mrz_canvas" width="624" height="464"> :( Обновите браузер :( </canvas>
-			<script type="text/javascript">
-			// Tank's level
-
-
-
-
-				var canvas = document.getElementById("mrz_canvas");
-				var ctx = canvas.getContext('2d');
-				var parent = getParent(canvas);
-				var x_size = 0;
-				var y_size = 0;
-				x_size = parent.offsetWidth;
-				y_size = parent.offsetHeight;
-				alert('X = ' + x_size + '; Y = ' + y_size);
-				canvas.width = x_size;
-				canvas.height = y_size;
-				ctx.fillStyle = "#2a5885";
-				ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-
-
-
-	
-var cellSize = 32,
-    // Массив карты поля боя
-    map = [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
-        [0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
-        [0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
-        [0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
-        [0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 1, 1, 2, 2, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
-        [0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 1, 1, 2, 2, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
-        [0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
-        [0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
-        [0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
-        [0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [1, 1, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1],
-        [2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 2, 2],
-        [0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
-        [0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
-        [0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
-        [0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
-        [0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
-        [0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
-        [0, 0, 2, 2, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ];
-canvas.width = 16 * cellSize;
-canvas.height = 15 * cellSize;
-ctx.fillStyle = '#ccc';
-ctx.fillRect(0, 0, canvas.width, canvas.height);
-ctx.fillStyle = '#000';
-ctx.fillRect(cellSize, cellSize, 13 * cellSize, 13 * cellSize)
-// Цикл обрабатывающий массив в котором содержатся значения элементов карты
-// если попадается 1 то рисуется кирпичный блок
-// если 2, то бетонная стена
-for (var j = 0; j < 26; j++)
-for (var i = 0; i < 26; i++) {
-    switch (map[j][i]) {
-        case 1:
-            DrawBrick(i * cellSize / 2 + cellSize, j * cellSize / 2 + cellSize);
-            break;
-        case 2:
-            DrawHardBrick(i * cellSize / 2 + cellSize, j * cellSize / 2 + cellSize);
-            break;
-    }
-}
-
-// Рисуем часть кирпичной стены
-function DrawBrick(x, y) {
-    // Отрисовка основного цвета кирпича
-    ctx.fillStyle = '#FFA500';
-    ctx.fillRect(x, y, cellSize / 2, cellSize / 2);
-    // Отрисовка теней
-    ctx.fillStyle = '#CD8500';
-    ctx.fillRect(x, y, cellSize / 2, cellSize / 16);
-    ctx.fillRect(x, y + cellSize / 4, cellSize / 2, cellSize / 16);
-    ctx.fillRect(x + cellSize / 4, y, cellSize / 16, cellSize / 4);
-    ctx.fillRect(x + cellSize / 16, y + cellSize / 4, cellSize / 16, cellSize / 4);
-    // Отрисовка раствора между кирпичами
-    ctx.fillStyle = '#D3D3D3';
-    ctx.fillRect(x, y + cellSize / 4 - cellSize / 16, cellSize / 2, cellSize / 16);
-    ctx.fillRect(x, y + cellSize / 2 - cellSize / 16, cellSize / 2, cellSize / 16);
-    ctx.fillRect(x + cellSize / 4 - cellSize / 16, y, cellSize / 16, cellSize / 4);
-    ctx.fillRect(x, y + cellSize / 4 - cellSize / 16, cellSize / 16, cellSize / 4);
-}
-
-// Рисуем часть бетонного блока
-function DrawHardBrick(x, y) {
-		ctx.fillStyle = '#cccccc';
-		ctx.fillRect(x, y, cellSize / 2, cellSize / 2);
-		ctx.fillStyle = '#909090';
-		ctx.beginPath();
-		ctx.moveTo(x, y + cellSize / 2);
-		ctx.lineTo(x + cellSize / 2, y + cellSize / 2);
-		ctx.lineTo(x + cellSize / 2, y);
-		ctx.fill();
-		ctx.fillStyle = '#eeeeee';
-		ctx.fillRect(x + cellSize / 8, y + cellSize / 8, cellSize / 4, cellSize / 4);
-	}
-	pic = new Image();
-	pic.src = 't34.png'; 
-	pic.onload = function() {
-			ctx.drawImage(pic, cellSize, cellSize, cellSize, cellSize);
-		}
-	function getParent(el){
-		return el.parentElement || el.parentNode; 
-	}
-
-</script>
+		<canvas id="mrz_canvas" width="624" height="464"> :( Обновите браузер :( </canvas>
+		<script type="text/javascript">
+			function getParent(el){
+					return el.parentElement || el.parentNode;
+				}
+			var canvas = document.getElementById("mrz_canvas");
+			var ctx = canvas.getContext('2d');
+			var parent = getParent(canvas);
+			var x_size = 0;
+			var y_size = 0;
+			x_size = parent.offsetWidth;
+			y_size = parent.offsetHeight;
+			canvas.width = x_size;
+			canvas.height = y_size;
+			ctx.fillStyle = "#2a5885";
+			ctx.fillRect(0, 0, canvas.width, canvas.height);
+		</script>
 </body>
 </HTML>
