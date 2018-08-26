@@ -1,27 +1,178 @@
-<HTML>
-<head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <meta http-equiv="X-UA-Compatible" content="ie=edge">
- <title>Flappy Bird!</title>
-</head>
-<body>
-		<canvas id="mrz_canvas" width="624" height="464"> :( Обновите браузер :( </canvas>
-		<script type="text/javascript">
-			function getParent(el){
-					return el.parentElement || el.parentNode;
-				}
-			var canvas = document.getElementById("mrz_canvas");
-			var ctx = canvas.getContext('2d');
-			var parent = getParent(canvas);
-			var x_size = 0;
-			var y_size = 0;
-			x_size = parent.offsetWidth;
-			y_size = parent.offsetHeight;
-			canvas.width = x_size;
-			canvas.height = y_size;
-			ctx.fillStyle = "#2a5885";
-			ctx.fillRect(0, 0, canvas.width, canvas.height);
-		</script>
+<!doctype html>
+<html lang="ru">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="moroz69off">
+  <meta name="Keywords" content="moroz69off">
+  <meta name="Description" content="moroz69off">
+  <title>Canvas06</title>
+ </head>
+
+<style type="text/css">
+	#mrz_canvas {
+		
+	}
+</style>
+
+ <body>
+
+
+<div class="CanvasContainer">
+    <canvas id="mrz_canvas" width="624" height="464"> :( НЕТУТИ... :( </canvas>
+</div>
+<div>
+    <button onclick="addBall()">Добавить мячик</button>
+    <button onclick="clearBalls()">Очистить холст</button>
+</div>
+<div>
+    Размер мячика:<input id="ballSize" type="number" min="0" max="50" value="15">
+    <input id="connectedBalls" type="checkbox">Добавить соединяющие линии<br>
+</div>
+
+
+
+  <script type="text/javascript">
+	
+
+// Тип данных, представляющий отдельный мячик
+function Ball(x, y, dx, dy, radius) {
+    this.x = x;
+    this.y = y;
+    this.dx = dx;
+    this.dy = dy;
+    this.radius = radius;
+    this.strokeColor = "black";
+    this.fillColor = "red";
+}
+
+// Массив, содержащий информацию обо всех мячиках на холсте
+var balls = [];
+
+
+function addBall() {
+    // Устанавливаем размер мячика
+    var radius = parseFloat(document.getElementById("ballSize").value);
+
+    // Создаем новый мячик
+    var ball = new Ball(50,50,1,1,radius);
+
+    // Сохраняем его в массиве
+    balls.push(ball);
+}
+
+
+function clearBalls() {
+  // Удаляем все мячики
+  balls = [];
+}
+
+
+window.onload = function() {
+	   // Определение контекста рисования
+		canvas = document.getElementById("mrz_canvas");
+		context = canvas.getContext("2d");
+		 
+
+		var parent = getParent(canvas);
+		var x_size = 0;
+		var y_size = 0;
+		x_size = parent.offsetWidth;
+		y_size = parent.offsetHeight;
+		canvas.width = x_size;
+		canvas.height = y_size;
+		canvas.onmousedown = canvasClick;
+	   // Обновляем холст через 0.02 секунды
+	   setTimeout("drawFrame()", 20);
+}
+
+
+function canvasClick(e) {
+  // Координаты щелчка мышью
+  var clickX = e.pageX - canvas.offsetLeft;
+  var clickY = e.pageY - canvas.offsetTop;
+
+  for(var i in balls)
+  {
+    var ball = balls[i];
+	
+	// Проверка попадания
+    if ((clickX > (ball.x-ball.radius)) && (clickX < (ball.x+ball.radius)))
+    {
+      if ((clickY > (ball.y-ball.radius)) && (clickY < (ball.y+ball.radius)))
+      {
+        // Изменить скорость мячика
+        ball.dx -= 2;
+        ball.dy -= 3;
+        return;
+      }
+    }
+  }
+}
+
+
+
+function drawFrame() {
+    // Очистить холст
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Вызываем метод beginPath(), чтобы убедиться,
+    // что мы не рисуем часть уже нарисованного содержимого холста
+    context.beginPath();
+
+    // Перебираем все мячики
+    for(var i=0; i<balls.length; i++) {
+        // Перемещаем каждый мячик в его новую позицию
+        var ball = balls[i];
+        ball.x += ball.dx;
+        ball.y += ball.dy;
+
+        // Добавляем эффект "гравитации", который ускоряет падение мячика
+        if ((ball.y) < canvas.height) ball.dy += 0.22;
+
+        // Добавляем эффект "трения", который замедляет движение мячика
+        ball.dx = ball.dx * 0.998;
+
+        // Если мячик натолкнулся на край холста, отбиваем его
+        if ((ball.x + ball.radius > canvas.width) || (ball.x - ball.radius < 0)) {
+            ball.dx = -ball.dx;
+        }
+
+        // Если мячик упал вниз, отбиваем его, но слегка уменьшаем скорость
+        if ((ball.y + ball.radius > canvas.height) || (ball.y - ball.radius < 0)) { 
+            ball.dy = -ball.dy*0.96; 
+        }
+
+        // Проверяем, хочет ли пользователь соединительные линии
+        if (!document.getElementById("connectedBalls").checked) {
+            context.beginPath();
+            context.fillStyle = ball.fillColor;
+        }
+        else {
+            context.fillStyle = "white";
+        }
+
+        // Рисуем мячик
+        context.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2);
+        context.lineWidth = 1;
+        context.fill();
+        context.stroke(); 
+    }
+
+    // Рисуем следующий кадр через 20 миллисекунд
+    setTimeout("drawFrame()", 20);
+}
+
+
+
+
+function getParent(el){
+		return el.parentElement || el.parentNode;
+		}
+
+
+</script>
 </body>
-</HTML>
+</html>
