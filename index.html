@@ -2,177 +2,95 @@
 <html lang="ru">
  <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="Generator" content="EditPlus®">
   <meta name="Author" content="moroz69off">
   <meta name="Keywords" content="moroz69off">
   <meta name="Description" content="moroz69off">
-  <title>Canvas06</title>
+  <title>Canvas04</title>
  </head>
 
-<style type="text/css">
-	#mrz_canvas {
-		
-	}
-</style>
-
  <body>
+     <style type="text/css">
+         body{margin:0;padding:0;width:100%;height:100%;}
+     </style>
+     <canvas id="m_canvas"></canvas>
+     <script type="text/javascript">
+         //=====================================================
+         function clearParticles() {// Удаляем все частицы
+             particles = [];
+         }
 
+         function getParent(el) {// Получаем родителя
+             return el.parentElement || el.parentNode;
+         }
 
-<div class="CanvasContainer">
-    <canvas id="mrz_canvas" width="624" height="464"> :( НЕТУТИ... :( </canvas>
-</div>
-<div>
-    <button onclick="addBall()">Добавить мячик</button>
-    <button onclick="clearBalls()">Очистить холст</button>
-</div>
-<div>
-    Размер мячика:<input id="ballSize" type="number" min="0" max="50" value="15">
-    <input id="connectedBalls" type="checkbox">Добавить соединяющие линии<br>
-</div>
+         function getRandomInt(max, min) {// Возвратит псевдослучайное число из диапазона max — min
+             var rnd = Math.floor(Math.random() * (max - min + 1)) + min;
+             return rnd;
+         }
 
+         var position = {
+             x: 0,
+             y: 0
+         };
 
+         var w = window.innerWidth
+             || document.documentElement.clientWidth
+             || document.body.clientWidth;
 
-  <script type="text/javascript">
-	
+         var h = window.innerHeight
+             || document.documentElement.clientHeight
+             || document.body.clientHeight;
 
-// Тип данных, представляющий отдельный мячик
-function Ball(x, y, dx, dy, radius) {
-    this.x = x;
-    this.y = y;
-    this.dx = dx;
-    this.dy = dy;
-    this.radius = radius;
-    this.strokeColor = "black";
-    this.fillColor = "red";
-}
+         var canvas = document.getElementById("m_canvas");
+         canvas.height = h;
+         canvas.width = w;
 
-// Массив, содержащий информацию обо всех мячиках на холсте
-var balls = [];
-
-
-function addBall() {
-    // Устанавливаем размер мячика
-    var radius = parseFloat(document.getElementById("ballSize").value);
-
-    // Создаем новый мячик
-    var ball = new Ball(50,50,1,1,radius);
-
-    // Сохраняем его в массиве
-    balls.push(ball);
-}
-
-
-function clearBalls() {
-  // Удаляем все мячики
-  balls = [];
-}
-
-
-window.onload = function() {
-	   // Определение контекста рисования
-		canvas = document.getElementById("mrz_canvas");
-		context = canvas.getContext("2d");
-		 
-
-		var parent = getParent(canvas);
-		var x_size = 0;
-		var y_size = 0;
-		x_size = parent.offsetWidth;
-		y_size = parent.offsetHeight;
-		canvas.width = x_size;
-		canvas.height = y_size;
-		canvas.onmousedown = canvasClick;
-	   // Обновляем холст через 0.02 секунды
-	   setTimeout("drawFrame()", 20);
-}
-
-
-function canvasClick(e) {
-  // Координаты щелчка мышью
-  var clickX = e.pageX - canvas.offsetLeft;
-  var clickY = e.pageY - canvas.offsetTop;
-
-  for(var i in balls)
-  {
-    var ball = balls[i];
-	
-	// Проверка попадания
-    if ((clickX > (ball.x-ball.radius)) && (clickX < (ball.x+ball.radius)))
-    {
-      if ((clickY > (ball.y-ball.radius)) && (clickY < (ball.y+ball.radius)))
-      {
-        // Изменить скорость мячика
-        ball.dx -= 2;
-        ball.dy -= 3;
-        return;
-      }
-    }
-  }
-}
+         // набор частиц (сердечек)
+         var particles = [];
 
 
 
-function drawFrame() {
-    // Очистить холст
-    context.clearRect(0, 0, canvas.width, canvas.height);
+         window.onload = function () {
+             // Определение контекста рисования
+             context = canvas.getContext("2d");
+             // Отрисовка всего фрейма через 20 миллисекунд
+             setTimeout("drawFrame()", 20);
+         }
 
-    // Вызываем метод beginPath(), чтобы убедиться,
-    // что мы не рисуем часть уже нарисованного содержимого холста
-    context.beginPath();
+         // Данные, представляющие отдельную частицу
+         function Particle() {
+             this.strokeColor = "rgba(111, 111, 111, 222)";
+             this.fillColor = "#ff99ff";
+             this.pos_x = position.x;
+             this.pos_y = position.y;
+             this.lifeTime = 3333;
+         }
 
-    // Перебираем все мячики
-    for(var i=0; i<balls.length; i++) {
-        // Перемещаем каждый мячик в его новую позицию
-        var ball = balls[i];
-        ball.x += ball.dx;
-        ball.y += ball.dy;
-
-        // Добавляем эффект "гравитации", который ускоряет падение мячика
-        if ((ball.y) < canvas.height) ball.dy += 0.22;
-
-        // Добавляем эффект "трения", который замедляет движение мячика
-        ball.dx = ball.dx * 0.998;
-
-        // Если мячик натолкнулся на край холста, отбиваем его
-        if ((ball.x + ball.radius > canvas.width) || (ball.x - ball.radius < 0)) {
-            ball.dx = -ball.dx;
-        }
-
-        // Если мячик упал вниз, отбиваем его, но слегка уменьшаем скорость
-        if ((ball.y + ball.radius > canvas.height) || (ball.y - ball.radius < 0)) { 
-            ball.dy = -ball.dy*0.96; 
-        }
-
-        // Проверяем, хочет ли пользователь соединительные линии
-        if (!document.getElementById("connectedBalls").checked) {
-            context.beginPath();
-            context.fillStyle = ball.fillColor;
-        }
-        else {
-            context.fillStyle = "white";
-        }
-
-        // Рисуем мячик
-        context.arc(ball.x, ball.y, ball.radius, 0, Math.PI*2);
-        context.lineWidth = 1;
-        context.fill();
-        context.stroke(); 
-    }
-
-    // Рисуем следующий кадр через 20 миллисекунд
-    setTimeout("drawFrame()", 20);
-}
+         function drawHeart(particle) {
 
 
+         }
 
+         function addParticle() {
+             position.x = getRandomInt(w, 0);
+             position.y = getRandomInt(h, 0);
+             var particle = new Particle();
+             particles.push(particle);
+         }
 
-function getParent(el){
-		return el.parentElement || el.parentNode;
-		}
+         function drawFrame() {
+             context.fillStyle = "#00ffff";
+             context.fillRect(0, 0, w, h);
+             if (particles.length < 8) addParticle();
+             for (i = 0; i < particles.length; i++) {
+                 context.strokeStyle = particles[i].strokeColor;
+                 context.fillStyle = particles[i].fillColor;
+                 context.fillRect(particles[i].pos_x, particles[i].pos_y, 50, 50);
+             }
+             setTimeout("drawFrame()", 40);
+         }
 
-
-</script>
-</body>
+     </script>
+ </body>
 </html>
